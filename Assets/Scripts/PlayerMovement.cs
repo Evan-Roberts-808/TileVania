@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rigidbody;
     Animator animator;
     CapsuleCollider2D capsuleCollider;
+    float startingGravity;
 
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        startingGravity = rigidbody.gravityScale;
     }
 
     // Update is called once per frame
@@ -52,12 +54,14 @@ public class PlayerMovement : MonoBehaviour
     void ClimbLadder()
     {
         if (!capsuleCollider.IsTouchingLayers(LayerMask.GetMask("Ladder"))) {
+            rigidbody.gravityScale = startingGravity;
             animator.SetBool("isClimbing", false);
             return;
         }
         Vector2 climbVelocity = new Vector2(rigidbody.velocity.x, moveInput.y * climbSpeed);
         rigidbody.velocity = climbVelocity;
         bool playerHasVerticalSpeed = Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon;
+        rigidbody.gravityScale = 0f;
         animator.SetBool("isClimbing", playerHasVerticalSpeed);
     }
 
