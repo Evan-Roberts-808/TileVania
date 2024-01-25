@@ -12,10 +12,12 @@ public class PlayerMovement : MonoBehaviour
     CapsuleCollider2D bodyCollider;
     BoxCollider2D feetCollider;
     float startingGravity;
+    bool isAlive = true;
 
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float climbSpeed = 5f;
+    [SerializeField] Vector2 deathLaunch = new Vector2(10f, 10f);
 
     // Start is called before the first frame update
     void Start()
@@ -30,19 +32,32 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isAlive)
+        {
+            return;
+        }
         Run();
         FlipSprite();
         ClimbLadder();
+        Die();
     }
 
     void OnMove(InputValue value)
     {
+        if (!isAlive)
+        {
+            return;
+        }
         moveInput = value.Get<Vector2>();
         Debug.Log(moveInput);
     }
 
     void OnJump(InputValue value)
     {
+        if (!isAlive)
+        {
+            return;
+        }
         if (!feetCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             return;
@@ -55,7 +70,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ClimbLadder()
     {
-        if (!feetCollider.IsTouchingLayers(LayerMask.GetMask("Ladder"))) {
+        if (!feetCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        {
             rigidbody.gravityScale = startingGravity;
             animator.SetBool("isClimbing", false);
             return;
@@ -83,6 +99,16 @@ public class PlayerMovement : MonoBehaviour
         if (playerHasHorizontalSpeed)
         {
             transform.localScale = new Vector2(Mathf.Sign(rigidbody.velocity.x), 1f);
+        }
+    }
+
+    void Die()
+    {
+        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")))
+        {
+            isAlive = false;
+            animator.SetTrigger("isDead");
+            rigidbody.velocity = deathLaunch;
         }
     }
 }
