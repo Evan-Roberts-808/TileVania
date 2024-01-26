@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] Vector2 deathLaunch = new Vector2(10f, 10f);
     [SerializeField] ParticleSystem deathEffect;
+    [SerializeField] GameObject bullet;
+    [SerializeField] Transform gun;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,15 @@ public class PlayerMovement : MonoBehaviour
         FlipSprite();
         ClimbLadder();
         Die();
+    }
+
+    void OnFire(InputValue value)
+    {
+        if (!isAlive)
+        {
+            return;
+        }
+        Instantiate(bullet, gun.position, transform.rotation);
     }
 
     void OnMove(InputValue value)
