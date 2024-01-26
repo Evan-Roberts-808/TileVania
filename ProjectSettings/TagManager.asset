@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Particles
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - Player
   - Background
   - Bouncing
-  - 
-  - 
+  - Enemies
+  - Hazards
   - 
   - 
   - 
@@ -52,6 +53,12 @@ TagManager:
     locked: 0
   - name: Ladder
     uniqueID: 1086723729
+    locked: 0
+  - name: Hazards
+    uniqueID: 3483032649
+    locked: 0
+  - name: Enemies
+    uniqueID: 4061518401
     locked: 0
   - name: Player
     uniqueID: 1930088337

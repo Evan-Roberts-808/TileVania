@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] Vector2 deathLaunch = new Vector2(10f, 10f);
+    [SerializeField] ParticleSystem deathEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -104,11 +105,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Die()
     {
-        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")))
+        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards")))
         {
             isAlive = false;
             animator.SetTrigger("isDead");
             rigidbody.velocity = deathLaunch;
+            deathEffect.Play();
         }
     }
 }
