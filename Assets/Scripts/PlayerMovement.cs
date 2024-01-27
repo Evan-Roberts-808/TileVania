@@ -122,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("isDead");
             rigidbody.velocity = deathLaunch;
             deathEffect.Play();
+            FindObjectOfType<GameSession>().ProcessPlayerDeath();
         }
     }
 }
